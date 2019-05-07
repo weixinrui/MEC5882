@@ -12,6 +12,8 @@
 #define MAX_PWM 511
 #define V_IN 4.96
 #define PWM_PIN 9      //滴灌
+#define PWM_PIN 6      //Mist
+#define PWM_PIN 5      //Fan
 #define V_OUT_PIN 3
 #define B 3997
 
@@ -21,6 +23,7 @@ const float SOUND_V = 343;
 const int VAL_PROBE = 0;        // Analog pin 0
 const int MOISTURE_LEVEL = 250; // the value after the LED goes ON
 Servo myservo;
+Servo myservo 2;
 
 float getTem()
 {
@@ -91,7 +94,8 @@ void setup()
   Serial.begin(9600);
   thermistorInit();
   ultrasonicInit();
-  myservo.attach(PWM_PIN);
+  myservo.attach(9);
+  myservo2.attach(6);
 }
 
 void loop()
@@ -122,5 +126,24 @@ void loop()
   }
   desireMoi = 10000;
   (moisture > desireMoi) ? ( myservo.write(0) ) : ( myservo.write(180) );
+  delay(100);
+  
+   // Mist: Fan + Valve2 Control
+   if(tem > desireTem)
+  {
+    fanPWMValue = constrain( 511, 0, 511); // Fan ON
+    myservo2.write(180); //Valve ON
+  }
+  else if(tem < desireTem)
+  {
+    fanPWMValue = 0; // Fan OFF
+    myservo2.write(180); //Valve OFF
+  }
+  OCR1A = fanPWMValue;
+  Serial.print(tem);
+  Serial.print(',');
+  //Check Serial.print(fanPWMValue);
+  Serial.print(map(fanPWMValue, 0, 511, 0, 100));
+  Serial.print('\n');
   delay(100);
 }
