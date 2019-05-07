@@ -121,6 +121,6 @@ void loop()
     }
   }
   desireMoi = 10000;
-  (moisture > desireMoi) ? ( myservo.write(0) ) : ( myservo.write(180) );
+  (moisture > desireMoi) ? ( myservo.write(0) ) : ( myservo.write(90) );
   delay(100);
 }
