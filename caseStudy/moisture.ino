@@ -82,9 +82,9 @@ float getDistance()
 void valueDisplay(float moi, float tem, float dis)
 {
   Serial.print(moi);
-  Serial.print('\n');
+  Serial.print(',');
   Serial.print(tem);
-  Serial.print('\n');
+  Serial.print(',');
   Serial.print(dis);
   Serial.print('\n');
 }
